@@ -75,7 +75,7 @@ if (imguigml_ready())
 	
 	if (instance_exists(selected_node))
 	{
-		if (selected_node.locked == false)
+		/*if (selected_node.locked == false)
 		{
 			selected_node.label = imguigml_input_text("Label", selected_node.label, maximum_node_label_length)[1];
 			selected_node.note_text = imguigml_input_text_multiline("Desc.", selected_node.note_text, maximum_node_label_length, 200, 160)[1];
@@ -84,7 +84,10 @@ if (imguigml_ready())
 		{
 			imguigml_text(selected_node.label);
 			imguigml_text(selected_node.note_text);
-		}
+		}*/
+		
+		selected_node.label = imguigml_input_text("Label", selected_node.label, maximum_node_label_length)[1];
+		selected_node.note_text = imguigml_input_text_multiline("Desc.", selected_node.note_text, maximum_node_label_length, 200, 160)[1];
 	}
 	else imguigml_text("No Node Selected");
 	
