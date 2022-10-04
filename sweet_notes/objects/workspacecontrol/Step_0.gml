@@ -70,7 +70,7 @@ if (imguigml_ready())
 	
 	//---Selected node menu---
 	imguigml_set_next_window_pos(global.display_width - 240, 270);
-	imguigml_set_next_window_size(240, 160);
+	imguigml_set_next_window_size(240, 220);
 	imguigml_begin("Selected Node");
 	
 	if (instance_exists(selected_node))
@@ -87,7 +87,7 @@ if (imguigml_ready())
 		}*/
 		
 		selected_node.label = imguigml_input_text("Label", selected_node.label, maximum_node_label_length)[1];
-		selected_node.note_text = imguigml_input_text_multiline("Desc.", selected_node.note_text, maximum_node_label_length, 200, 160)[1];
+		selected_node.note_text = imguigml_input_text_multiline("Desc.", selected_node.note_text, maximum_node_note_text_length, 200, 160)[1];
 	}
 	else imguigml_text("No Node Selected");
 	
@@ -140,11 +140,9 @@ if (instance_exists(obj_genericNode))
 			}	
 		}
 	}
-	else dragging = -4;
-
-	//reset mouse_node_offset_x
-	if (!instance_exists(selected_node))
+	else
 	{
+		dragging = -4;
 		mouse_node_offset_x = -1337;
 		mouse_node_offset_y = -1337;
 	}

@@ -82,6 +82,6 @@ global.display_height = display_get_gui_height();
 current_filename = "file";
 
 maximum_node_label_length = 64;
-maximum_node_note_text_length = 255;
+maximum_node_note_text_length = 600;
 mouse_node_offset_x = -1337;
 mouse_node_offset_y = -1337;
