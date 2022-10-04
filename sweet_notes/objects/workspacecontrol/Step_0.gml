@@ -31,7 +31,7 @@ if (imguigml_ready())
 			}
 				
 			if (imguigml_button("Save"))
-				save_project(get_string("Enter Filename", "file") + ".txt");
+				save_project(get_string("Enter Filename", current_filename) + ".txt");
 				
 			if (imguigml_button("Load"))
 				load_project(get_open_filename("text file|*.txt", ""));
@@ -90,58 +90,66 @@ if (imguigml_ready())
 
 
 //NODE INTERACTION
-if (!instance_exists(obj_genericNode))
-	exit;
-	
-var nearest_node = instance_nearest(mouse_x, mouse_y, obj_genericNode);
-
-if (mouse_check_button(mb_left))
+if (instance_exists(obj_genericNode))
 {
-	with (nearest_node)
+	if (mouse_check_button(mb_left))
 	{
-		var _x1 = x - 2;
-		var _y1 = y - 2;
-		var _x2 = x + string_width(label) + 2;
-		var _y2 = y + string_height(label) + 2;
-		
-		if (point_in_rectangle(mouse_x, mouse_y, _x1, _y1, _x2, _y2) || other.dragging == id)
-		{			
-			other.selected_node = id;
-			
-			if (!locked)
-				other.dragging = id;
-			
-			if (other.mouse_node_offset_x = -1337)
-			{
-				other.mouse_node_offset_x = (mouse_x - x);
-				other.mouse_node_offset_y = (mouse_y - y);
-			}
-		}
-		else other.selected_node = noone;
-	}
-	
-	
-	//Selected node functions
-	if (instance_exists(selected_node))
-	{
-		if (dragging = selected_node && !selected_node.locked)
+		with (obj_genericNode)
 		{
-			selected_node.x = mouse_x - mouse_node_offset_x;
-			selected_node.y = mouse_y - mouse_node_offset_y;
+			var _x1 = x - 2;
+			var _y1 = y - 2;
+			var _x2 = x + string_width(label) + 2;
+			var _y2 = y + string_height(label) + 2;
+		
+			if (point_in_rectangle(mouse_x, mouse_y, _x1, _y1, _x2, _y2) || other.dragging == id)
+			{			
+				other.selected_node = id;
+			
+				if (!locked)
+					other.dragging = id;
+			
+				if (other.mouse_node_offset_x = -1337)
+				{
+					other.mouse_node_offset_x = (mouse_x - x);
+					other.mouse_node_offset_y = (mouse_y - y);
+				}
+			}
+			else continue;
+			
+			//Mouse locking
+			if (mouse_check_button_pressed(mb_right))
+				locked = !locked;
+				
+			break;
 		}
 	
-		//Lock nodes
-		if (keyboard_check_released(vk_space))
-			selected_node.locked = !selected_node.locked;
+	
+		//Selected node functions
+		if (instance_exists(selected_node))
+		{
+			if (dragging = selected_node && !selected_node.locked)
+			{
+				selected_node.x = mouse_x - mouse_node_offset_x;
+				selected_node.y = mouse_y - mouse_node_offset_y;
+			}	
+		}
+	}
+	else dragging = -4;
+
+	//reset mouse_node_offset_x
+	if (!instance_exists(selected_node))
+	{
+		mouse_node_offset_x = -1337;
+		mouse_node_offset_y = -1337;
 	}
 }
-else dragging = -4;
 
-//reset mouse_node_offset_x
-if (!instance_exists(selected_node))
+
+//--WINDOW RESIZING
+if (window_has_focus() && (global.display_width != window_get_width() || global.display_height != window_get_height()))
 {
-	mouse_node_offset_x = -1337;
-	mouse_node_offset_y = -1337;
+	global.display_width = window_get_width();
+	global.display_height = window_get_height();
+	
+	surface_resize(application_surface, global.display_width, global.display_height);
 }
-
-//show_debug_message(string(selected_node));

@@ -49,6 +49,8 @@ function save_project(filename)
 	//cleanup
 	buffer_delete(save_buffer);
 	ds_map_destroy(data_map);
+	
+	current_filename = filename;
 }
 
 
@@ -66,6 +68,7 @@ function load_project(filename)
 	
 		for (var j = 0; j < array_length(nodes); j++)
 		{
+			
 			var variables = variable_struct_get(json_struct, nodes[j]);
 			instance_create_layer(299, 100, "Instances", obj_genericNode, variables);
 		}
@@ -75,6 +78,8 @@ function load_project(filename)
 //Variables
 global.display_width = display_get_gui_width();
 global.display_height = display_get_gui_height();
+
+current_filename = "file";
 
 maximum_node_label_length = 64;
 maximum_node_note_text_length = 255;
