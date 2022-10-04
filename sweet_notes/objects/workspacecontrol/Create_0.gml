@@ -75,3 +75,6 @@ function load_project(filename)
 //Variables
 global.display_width = display_get_gui_width();
 global.display_height = display_get_gui_height();
+
+maximum_node_label_length = 64;
+maximum_node_note_text_length = 255;

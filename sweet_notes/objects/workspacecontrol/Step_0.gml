@@ -18,7 +18,7 @@ if (imguigml_ready())
 	{
 		case "Workspace":
 		{
-			if (imguigml_button("Create Node") || keyboard_check_released(vk_enter))
+			if (imguigml_button("Create Node") || keyboard_check_released(vk_enter) && !instance_exists(selected_node))
 				menu_state = "Create Node";
 			
 			if (imguigml_button("Delete Selected Node") || keyboard_check_released(vk_delete))
@@ -40,15 +40,18 @@ if (imguigml_ready())
 		
 		case "Create Node":
 		{
-			node_name = imguigml_input_text("Node Name", node_name, 64)[1];
-			node_note = imguigml_input_text_multiline("Node Note", node_note, 255, 200, 160)[1];
+			node_name = imguigml_input_text("", node_name, maximum_node_label_length)[1];
+			node_note = imguigml_input_text_multiline("Node Note", node_note, maximum_node_note_text_length, 200, 160)[1];
 			
 			if (imguigml_button("Create Node"))
 			{
 				//Create the node	
-				var _c = instance_create_layer(100, 100, "Instances", obj_genericNode);
-				_c.label = node_name;
-				_c.note_text = node_note;
+				if (node_name != "")
+				{
+					var _c = instance_create_layer(100, 100, "Instances", obj_genericNode);
+					_c.label = node_name;
+					_c.note_text = node_note;
+				}
 				
 				//Reset
 				node_name = "";
@@ -69,8 +72,16 @@ if (imguigml_ready())
 	
 	if (instance_exists(selected_node))
 	{
-		imguigml_text(selected_node.label);
-		imguigml_text(selected_node.note_text);
+		if (selected_node.locked == false)
+		{
+			selected_node.label = imguigml_input_text("Label", selected_node.label, maximum_node_label_length)[1];
+			selected_node.note_text = imguigml_input_text_multiline("Desc.", selected_node.note_text, maximum_node_label_length, 200, 160)[1];
+		}
+		else
+		{
+			imguigml_text(selected_node.label);
+			imguigml_text(selected_node.note_text);
+		}
 	}
 	else imguigml_text("No Node Selected");
 	
@@ -88,18 +99,19 @@ if (mouse_check_button(mb_left))
 {
 	with (nearest_node)
 	{
-		var _x1 = x;
-		var _y1 = y;
-		var _x2 = x + string_width(label);
-		var _y2 = y + string_height(label);
+		var _x1 = x - 2;
+		var _y1 = y - 2;
+		var _x2 = x + string_width(label) + 2;
+		var _y2 = y + string_height(label) + 2;
 		
-		if (point_in_rectangle(mouse_x, mouse_y, _x1, _y1, _x2, _y2))
+		if (point_in_rectangle(mouse_x, mouse_y, _x1, _y1, _x2, _y2) || other.dragging == id)
 		{			
 			other.selected_node = id;
 			
 			if (!locked)
 				other.dragging = id;
 		}
+		else other.selected_node = noone;
 	}
 	
 	
