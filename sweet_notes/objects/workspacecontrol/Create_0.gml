@@ -50,7 +50,7 @@ function save_project(filename)
 	buffer_delete(save_buffer);
 	ds_map_destroy(data_map);
 	
-	current_filename = filename;
+	current_filename = string_replace(filename, ".txt", "");
 }
 
 

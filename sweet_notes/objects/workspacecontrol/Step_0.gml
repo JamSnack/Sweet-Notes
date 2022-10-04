@@ -29,6 +29,9 @@ if (imguigml_ready())
 					selected_node = noone;
 				}
 			}
+			
+			if (imguigml_button("Clear All"))
+				if (instance_exists(obj_genericNode)) with obj_genericNode instance_destroy();
 				
 			if (imguigml_button("Save"))
 				save_project(get_string("Enter Filename", current_filename) + ".txt");
