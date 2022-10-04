@@ -110,6 +110,12 @@ if (mouse_check_button(mb_left))
 			
 			if (!locked)
 				other.dragging = id;
+			
+			if (other.mouse_node_offset_x = -1337)
+			{
+				other.mouse_node_offset_x = (mouse_x - x);
+				other.mouse_node_offset_y = (mouse_y - y);
+			}
 		}
 		else other.selected_node = noone;
 	}
@@ -120,8 +126,8 @@ if (mouse_check_button(mb_left))
 	{
 		if (dragging = selected_node && !selected_node.locked)
 		{
-			selected_node.x = mouse_x;
-			selected_node.y = mouse_y;
+			selected_node.x = mouse_x - mouse_node_offset_x;
+			selected_node.y = mouse_y - mouse_node_offset_y;
 		}
 	
 		//Lock nodes
@@ -130,5 +136,12 @@ if (mouse_check_button(mb_left))
 	}
 }
 else dragging = -4;
+
+//reset mouse_node_offset_x
+if (!instance_exists(selected_node))
+{
+	mouse_node_offset_x = -1337;
+	mouse_node_offset_y = -1337;
+}
 
 //show_debug_message(string(selected_node));
