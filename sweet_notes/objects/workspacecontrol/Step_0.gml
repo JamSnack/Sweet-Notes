@@ -46,6 +46,8 @@ if (imguigml_ready())
 			node_name = imguigml_input_text("", node_name, maximum_node_label_length)[1];
 			node_note = imguigml_input_text_multiline("Node Note", node_note, maximum_node_note_text_length, 200, 160)[1];
 			
+			node_note = split_note_text(node_note);
+			
 			if (imguigml_button("Create Node"))
 			{
 				//Create the node	
@@ -87,7 +89,7 @@ if (imguigml_ready())
 		}*/
 		
 		selected_node.label = imguigml_input_text("Label", selected_node.label, maximum_node_label_length)[1];
-		selected_node.note_text = imguigml_input_text_multiline("Desc.", selected_node.note_text, maximum_node_note_text_length, 200, 160)[1];
+		selected_node.note_text = split_note_text(imguigml_input_text_multiline("Desc.", selected_node.note_text, maximum_node_note_text_length, 200, 160)[1]);
 	}
 	else imguigml_text("No Node Selected");
 	

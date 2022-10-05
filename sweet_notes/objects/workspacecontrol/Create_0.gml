@@ -75,12 +75,48 @@ function load_project(filename)
 	}
 }
 
+function split_note_text(node_text)
+{
+	var temp_string = "";
+	
+
+	while(string_width(node_text) > 260)
+	{
+		for (var i = 0; i < string_length(node_text); i++)
+		{
+			var _c = string_char_at(node_text, i);
+			
+			//remember last space the user inputted
+			if (_c == " " && i != string_length(node_text))
+				node_note_text_last_space = i+1;
+		
+			//Append to temp string
+			temp_string += _c
+			
+			//If temp string is too large, nextline at last space
+			if (string_width(temp_string+" ") > 260)
+			{
+				temp_string += "\n";
+				node_text = string_insert("\n", node_text, node_note_text_last_space);
+				node_note_text_last_space = 1;
+			}
+		}
+	}
+	
+	//reset
+	node_note_text_last_space = 1;
+	
+	//return
+	return node_text;
+}
+
 //Variables
 global.display_width = display_get_gui_width();
 global.display_height = display_get_gui_height();
 
 current_filename = "file";
 
+node_note_text_last_space = 1;
 maximum_node_label_length = 64;
 maximum_node_note_text_length = 600;
 mouse_node_offset_x = -1337;
